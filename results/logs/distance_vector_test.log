@@ -1,0 +1,41 @@
+========================================================================
+    DISTANCE VECTOR (BELLMAN-FORD) ROUTING INDEPENDENT TEST             
+========================================================================
+ Graph Topology Configured:
+   A --(2)--> B
+   A --(5)--> C
+   B --(1)--> C
+   B --(4)--> D
+   C --(1)--> D
+------------------------------------------------------------------------
+ Executing Distance Vector Iterative Route Exchanges...
+ Convergence achieved in 3 rounds with 8 route table updates.
+ Sample Route-Table Change Event Logs:
+   TIME=1.00 | NODE=A | DESTINATION=C | OLD_COST=5.0 | NEW_COST=3.0 | NEXT_HOP=B
+   TIME=1.00 | NODE=A | DESTINATION=D | OLD_COST=Inf | NEW_COST=6.0 | NEXT_HOP=B
+   TIME=1.00 | NODE=B | DESTINATION=D | OLD_COST=4.0 | NEW_COST=2.0 | NEXT_HOP=C
+   TIME=1.00 | NODE=C | DESTINATION=A | OLD_COST=5.0 | NEW_COST=3.0 | NEXT_HOP=B
+   TIME=1.00 | NODE=D | DESTINATION=A | OLD_COST=Inf | NEW_COST=6.0 | NEXT_HOP=B
+------------------------------------------------------------------------
+ Distance Vector Computed Shortest Route from A to D:
+   -> Path:      A->B->C->D
+   -> Next Hop:  B
+   -> Cost:      4.0
+   -> Status:    SUCCESS
+------------------------------------------------------------------------
+ [PASS] Distance Vector Shortest Path matches: A->B->C->D
+ [PASS] Path cost matches optimal cost: 4.0
+ [PASS] Next hop matches: B
+------------------------------------------------------------------------
+=======================================================
+     DISTANCE VECTOR ROUTING TABLE FOR NODE: A     
+=======================================================
+DESTINATION     | NEXT_HOP     | COST        
+-------------------------------------------------------
+A               | A            | 0.0         
+B               | B            | 2.0         
+C               | B            | 3.0         
+D               | B            | 4.0         
+-------------------------------------------------------
+========================================================================
+ [SUCCESS] All Distance Vector unit test assertions PASSED.

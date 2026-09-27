@@ -1,0 +1,6 @@
+loss_rate,packets_sent,packets_received,packets_lost,retransmissions,delivery_ratio,retransmission_ratio,throughput,delay
+0.00,30,30,0,0,100.00,0.00,2457.60,1.67
+0.05,34,30,1,4,88.24,11.76,491.52,8.33
+0.10,44,30,7,14,68.18,31.82,117.03,35.00
+0.20,36,30,2,6,83.33,16.67,273.07,15.00
+0.30,82,30,27,52,36.59,63.41,46.37,88.33

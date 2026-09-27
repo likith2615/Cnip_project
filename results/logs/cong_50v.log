@@ -1,0 +1,14 @@
+========================================================================
+       V2V MULTI-VEHICLE TRAFFIC CONGESTION SIMULATION (50 VEHICLES)    
+========================================================================
+   [CONGESTION-RESPONSE] TIME=1.60s | CONGESTION_DETECTED (Drops=1) -> Multiplicative Decrease: Interval 0.010s -> 0.020s (Rate: 204.8 Kbps)
+   [CONGESTION-RESPONSE] TIME=1.80s | CONGESTION_DETECTED (Drops=1) -> Multiplicative Decrease: Interval 0.020s -> 0.040s (Rate: 102.4 Kbps)
+   [CONGESTION-RESPONSE] TIME=2.00s | CONGESTION_DETECTED (Drops=1) -> Multiplicative Decrease: Interval 0.040s -> 0.080s (Rate: 51.2 Kbps)
+   [CONGESTION-RESPONSE] TIME=2.20s | CONGESTION_DETECTED (Drops=1) -> Multiplicative Decrease: Interval 0.080s -> 0.150s (Rate: 27.3 Kbps)
+   [CONGESTION-RESPONSE] TIME=2.40s | CONGESTION_DETECTED (Drops=1) -> Multiplicative Decrease: Interval 0.150s -> 0.150s (Rate: 27.3 Kbps)
+   [CONGESTION-RESPONSE] TIME=2.60s | CONGESTION_DETECTED (Drops=1) -> Multiplicative Decrease: Interval 0.150s -> 0.150s (Rate: 27.3 Kbps)
+   [CONGESTION-RESPONSE] TIME=2.80s | CONGESTION_DETECTED (Drops=1) -> Multiplicative Decrease: Interval 0.150s -> 0.150s (Rate: 27.3 Kbps)
+========================================================================
+ [SUCCESS] Congestion simulation (50 vehicles) completed.
+ Trace file: congestion_50v.tr (Size: 439363 bytes)
+========================================================================

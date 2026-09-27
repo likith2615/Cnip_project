@@ -1,0 +1,5 @@
+window_size,packets_sent,packets_acked,packets_in_flight,throughput,average_delay
+1,40,40,0,409.60,400.00
+4,40,40,0,1638.40,100.00
+8,40,40,0,3276.80,50.00
+16,40,40,0,5461.33,25.00

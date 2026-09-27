@@ -1,0 +1,27 @@
+========================================================================
+       DIJKSTRA ROUTING MODULE INDEPENDENT VERIFICATION TEST            
+========================================================================
+ Graph Topology Configured:
+   A --(2)--> B
+   A --(5)--> C
+   B --(1)--> C
+   B --(4)--> D
+   C --(1)--> D
+------------------------------------------------------------------------
+ Computed Shortest Path Analysis from A to D:
+   -> Path:      A->B->C->D
+   -> Next Hop:  B
+   -> Cost:      4.0
+   -> Status:    SUCCESS
+------------------------------------------------------------------------
+ [PASS] Shortest path correctly identified: A->B->C->D
+ [PASS] Total path cost correctly calculated: 4.0
+ [PASS] Next hop forwarding entry correct: B
+------------------------------------------------------------------------
+ Full Routing Table from Node A:
+   Dest: A   | Next Hop: A   | Cost: 0.0  | Path: A
+   Dest: B   | Next Hop: B   | Cost: 2.0  | Path: A->B
+   Dest: C   | Next Hop: B   | Cost: 3.0  | Path: A->B->C
+   Dest: D   | Next Hop: B   | Cost: 4.0  | Path: A->B->C->D
+========================================================================
+ [SUCCESS] All Dijkstra unit test assertions PASSED.

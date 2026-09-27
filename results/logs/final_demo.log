@@ -1,0 +1,41 @@
+========================================================================
+       AUTONOMOUS VEHICLE V2V UNIFIED SIMULATION ENGINE                 
+========================================================================
+ Active Parameters:
+   -> Vehicle Count:     25 Autonomous Vehicles
+   -> Routing Protocol:  DIJKSTRA
+   -> Wireless Loss:     5.0 %
+   -> Flow Window Size:  W = 4
+   -> Link Attributes:   10Mb bandwidth, 5ms delay, 50 queue
+   -> Simulation Time:   5.0 seconds
+   -> Output Trace:      results/traces/v2v_final_demo.tr
+========================================================================
+
+TIME=0.50
+SOURCE=V0
+DESTINATION=V24
+ALGORITHM=DIJKSTRA
+PATH=V0->V2->V4->V6->V8->V10->V12->V14->V16->V18->V20->V22->V24
+COST=90.0
+PRIORITY=HIGH
+
+TIME=0.80
+SOURCE=V12
+DESTINATION=V0
+ALGORITHM=DIJKSTRA
+PATH=V12->V10->V8->V6->V4->V2->V0
+COST=45.0
+PRIORITY=HIGH
+
+TIME=1.00
+SOURCE=V12
+DESTINATION=V24
+ALGORITHM=DIJKSTRA
+PATH=V12->V14->V16->V18->V20->V22->V24
+COST=45.0
+PRIORITY=NORMAL
+
+========================================================================
+ [SUCCESS] Simulation complete (25 vehicles, dijkstra routing).
+ Trace file: results/traces/v2v_final_demo.tr (Size: 483346 bytes)
+========================================================================

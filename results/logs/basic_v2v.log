@@ -1,0 +1,23 @@
+========================================================================
+       AUTONOMOUS VEHICLE V2V NETWORK SIMULATION (PHASE 1)              
+========================================================================
+ Configuration Parameters:
+   -> Number of Vehicles:      10
+   -> Wireless Link Bandwidth: 10Mb
+   -> Propagation Latency:     5ms
+   -> Queue Limit / Type:      50 packets (DropTail)
+   -> Channel Loss Rate:       5.0 %
+   -> Simulation Duration:     5.0 seconds
+   -> Output Trace:            results/traces/basic_v2v.tr
+   -> Output NAM:              basic_v2v.nam
+========================================================================
+ -> Injected ErrorModel with loss probability: 0.05
+[V2V-METADATA] Time: 0.50s | Type: COLLISION_WARNING  | Src: V0 | Dst: V9 | Size: 128B | Decel: 8.5 m/s^2, Hazard: Stationary Obstacle
+[V2V-METADATA] Time: 0.80s | Type: SUDDEN_BRAKING     | Src: V3 | Dst: V0 | Size: 256B | Decel: 6.2 m/s^2, Event: Hard Brake Active
+[V2V-METADATA] Time: 1.00s | Type: TRAFFIC_INFO       | Src: V5 | Dst: V9 | Size: 512B | Speed: 90 km/h, Density: High, Route: Clear
+
+========================================================================
+ [SUCCESS] V2V Simulation Completed Successfully (10 Vehicles).
+ Trace file: results/traces/basic_v2v.tr (Size: 186652 bytes)
+ NAM file:   basic_v2v.nam (Size: 446519 bytes)
+========================================================================

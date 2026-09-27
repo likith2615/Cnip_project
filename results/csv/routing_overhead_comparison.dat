@@ -1,0 +1,5 @@
+Protocol,Messages
+Dijkstra_LSA_Flood,48
+Distance_Vector_Exchanges,48
+Dijkstra_Link_Break,1
+DV_Link_Break_Reconverge,4

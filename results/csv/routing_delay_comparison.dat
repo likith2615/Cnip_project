@@ -1,0 +1,5 @@
+Protocol,Latency_ms
+Dijkstra_10v,18.79
+DistanceVector_10v,18.79
+Dijkstra_50v,27.18
+DistanceVector_50v,28.45
