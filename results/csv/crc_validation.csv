@@ -1,0 +1,6 @@
+Error_Category,Trials,Detected_Errors,Missed_Errors,Detection_Rate_Pct
+Single Bit Flip Errors,1000,1000,0,100.00%
+Two Isolated Bit Errors,1000,1000,0,100.00%
+Burst Errors (Length <= 8 bits),1000,1000,0,100.00%
+Burst Errors (Length 16 bits),1000,1000,0,100.00%
+Burst Errors (Length 24 bits),1000,1000,0,100.00%

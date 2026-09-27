@@ -1,0 +1,66 @@
+# ==========================================
+# Autonomous Vehicle V2V Communication
+# Basic NS-2 Simulation
+# ==========================================
+
+# Create simulator
+set ns [new Simulator]
+
+# Create NAM output file
+set nf [open v2v.nam w]
+$ns namtrace-all $nf
+
+# Create trace file
+set tf [open v2v.tr w]
+$ns trace-all $tf
+
+# ------------------------------
+# Create 5 autonomous vehicles
+# ------------------------------
+
+set v1 [$ns node]
+set v2 [$ns node]
+set v3 [$ns node]
+set v4 [$ns node]
+set v5 [$ns node]
+
+# ------------------------------
+# Vehicle-to-Vehicle links
+# ------------------------------
+
+$ns duplex-link $v1 $v2 10Mb 10ms DropTail
+$ns duplex-link $v2 $v3 10Mb 10ms DropTail
+$ns duplex-link $v3 $v4 10Mb 10ms DropTail
+$ns duplex-link $v4 $v5 10Mb 10ms DropTail
+$ns duplex-link $v2 $v4 5Mb 20ms DropTail
+
+# ------------------------------
+# Set node positions in NAM
+# ------------------------------
+
+$ns duplex-link-op $v1 $v2 orient right
+$ns duplex-link-op $v2 $v3 orient right
+$ns duplex-link-op $v3 $v4 orient right
+$ns duplex-link-op $v4 $v5 orient right
+$ns duplex-link-op $v2 $v4 orient down
+
+# ------------------------------
+# Finish procedure
+# ------------------------------
+
+proc finish {} {
+    global ns nf tf
+
+    $ns flush-trace
+
+    close $nf
+    close $tf
+
+    exit 0
+}
+
+# Run simulation
+$ns at 0.0 "finish"
+
+$ns run
+

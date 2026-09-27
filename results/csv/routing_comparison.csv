@@ -1,0 +1,11 @@
+Metric,Dijkstra (Link-State),Distance Vector (Bellman-Ford)
+Routing Algorithm Class,Global / Centralized or Flooded,Decentralized / Iterative
+Topology Knowledge,Complete Global Map (LSA DB),Next-hop local neighbors only
+Time Complexity per Node,O(V^2) or O(E + V log V),O(V * E) rounds
+Convergence Rounds (Initial),1 round (after LSA flood),3 rounds
+Message Overhead (Initial),48 LSA packets,48 DV exchange packets
+Reconvergence after Link Failure (V1-V3),Immediate (1 LSA flood),4 rounds (with Poison Reverse)
+Count-to-Infinity Susceptibility,None (No routing loops),High without PR (4+ rounds to detect INF)
+V0 -> V5 Shortest Latency (Normal),22.0 ms,22.0 ms
+V0 -> V5 Shortest Latency (V1-V3 Down),24.0 ms,24.0 ms
+Optimal Shortest Path Consistency,100% Identical Cost,100% Identical Cost
