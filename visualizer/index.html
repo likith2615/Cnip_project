@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Vehicle V2V Communication Simulator | NS-2 Interactive Visualizer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="logo-badge">
+                <span class="pulse-dot"></span>
+                <span class="logo-icon">🚗⚡</span>
+            </div>
+            <div class="header-title">
+                <h1>Autonomous Vehicle V2V Communication Simulator</h1>
+                <span class="header-subtitle">NS-2 Protocol Engine &bull; Academic Network Visualizer</span>
+            </div>
+        </div>
+
+        <nav class="nav-tabs" id="navTabs">
+            <button class="nav-btn active" data-tab="highway-tab" id="tabBtnHighway">
+                <span class="tab-icon">🛣️</span> Highway V2V Live
+            </button>
+            <button class="nav-btn" data-tab="routing-tab" id="tabBtnRouting">
+                <span class="tab-icon">🧭</span> Routing Lab (Dijkstra vs DV)
+            </button>
+            <button class="nav-btn" data-tab="crc-tab" id="tabBtnCrc">
+                <span class="tab-icon">🛡️</span> CRC Error Lab
+            </button>
+            <button class="nav-btn" data-tab="window-tab" id="tabBtnWindow">
+                <span class="tab-icon">🪟</span> Flow Control & ARQ
+            </button>
+            <button class="nav-btn" data-tab="congestion-tab" id="tabBtnCongestion">
+                <span class="tab-icon">📈</span> AIMD Congestion
+            </button>
+            <button class="nav-btn" data-tab="analytics-tab" id="tabBtnAnalytics">
+                <span class="tab-icon">📊</span> NS-2 Analytics & Traces
+            </button>
+            <button class="nav-btn" data-tab="viva-tab" id="tabBtnViva">
+                <span class="tab-icon">🎓</span> Viva Defense Mode
+            </button>
+        </nav>
+
+        <div class="header-right">
+            <div class="status-chip">
+                <span class="status-indicator"></span>
+                <span class="status-text">NS-2 Pure Engine</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-container">
+        
+        <!-- TAB 1: HIGHWAY V2V LIVE SIMULATOR -->
+        <section class="tab-content active" id="highway-tab">
+            <div class="dashboard-grid">
+                <!-- Simulation Canvas Card -->
+                <div class="card canvas-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <h2>🚗 Real-Time Highway V2V Mesh Network</h2>
+                            <span class="badge badge-primary">Multi-Hop Inter-Vehicle Relay</span>
+                        </div>
+                        <div class="canvas-actions">
+                            <button class="btn btn-sm btn-outline" id="btnToggleRange">📡 Toggle Radio Range</button>
+                            <button class="btn btn-sm btn-outline" id="btnToggleLinks">🔗 Toggle Mesh Links</button>
+                            <button class="btn btn-sm btn-outline" id="btnResetHighway">🔄 Reset Topology</button>
+                        </div>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="highwayCanvas" width="1100" height="420"></canvas>
+                        <div class="canvas-overlay-info" id="canvasOverlayInfo">
+                            <span>Active Route: <strong id="overlayRoute">V0 ➔ V2 ➔ V5 ➔ V9</strong></span>
+                            <span>Latency: <strong id="overlayLatency">12.4 ms</strong></span>
+                            <span>Protocol: <strong id="overlayProto">Dijkstra Shortest Path</strong></span>
+                        </div>
+                    </div>
+                    <!-- Live Event Trigger Bar -->
+                    <div class="simulation-controls-bar">
+                        <div class="control-group">
+                            <label>Trigger Safety Broadcast:</label>
+                            <div class="btn-group">
+                                <button class="btn btn-danger" id="btnSendCollision">
+                                    🚨 Collision Warning
+                                </button>
+                                <button class="btn btn-warning" id="btnSendBraking">
+                                    ⚠️ Sudden Braking
+                                </button>
+                                <button class="btn btn-info" id="btnSendTraffic">
+                                    ℹ️ Traffic Advisory
+                                </button>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="selectRoutingAlgo">Active Routing Protocol:</label>
+                            <select id="selectRoutingAlgo" class="form-select">
+                                <option value="dijkstra" selected>Dijkstra Link-State (Global SPT)</option>
+                                <option value="distance_vector">Distance Vector (Bellman-Ford + Poison Reverse)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="sliderVehicleDensity">Vehicle Count: <span id="lblVehicleCount">10</span></label>
+                            <input type="range" id="sliderVehicleDensity" min="6" max="25" value="10" class="form-range">
+                        </div>
+                        <div class="control-group">
+                            <label for="sliderPacketLoss">Channel Loss Rate: <span id="lblPacketLoss">0%</span></label>
+                            <input type="range" id="sliderPacketLoss" min="0" max="25" value="0" step="5" class="form-range">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vehicle Telemetry & Packet Log Card -->
+                <div class="card telemetry-card">
+                    <div class="card-header">
+                        <h2>📡 Live Vehicle Telemetry & Trace Log</h2>
+                        <span class="badge badge-success" id="badgePktCount">142 Packets</span>
+                    </div>
+                    <div class="vehicle-inspector" id="vehicleInspector">
+                        <div class="inspector-header">
+                            <span class="vehicle-tag" id="inspectId">Vehicle V1 (Sender)</span>
+                            <span class="speed-tag" id="inspectSpeed">84 km/h</span>
+                        </div>
+                        <div class="inspector-grid">
+                            <div class="metric-box">
+                                <span class="metric-lbl">Queue Size</span>
+                                <span class="metric-val" id="inspectQueue">3 / 50 pkts</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-lbl">PDR</span>
+                                <span class="metric-val text-success" id="inspectPDR">100.0%</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-lbl">Next Hop</span>
+                                <span class="metric-val" id="inspectNextHop">V2</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-lbl">Window Size</span>
+                                <span class="metric-val" id="inspectWindow">W = 4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="packet-terminal">
+                        <div class="terminal-header">
+                            <span>NS-2 REAL-TIME EVENT STREAM</span>
+                            <button class="terminal-clear-btn" id="btnClearTerm">Clear</button>
+                        </div>
+                        <div class="terminal-body" id="eventTerminal">
+                            <!-- Stream lines generated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: ROUTING LAB -->
+        <section class="tab-content" id="routing-tab">
+            <div class="lab-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🧭 Dijkstra vs. Distance Vector Algorithm Comparison</h2>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-primary" id="btnRunDijkstraDemo">▶ Run Dijkstra (SPF)</button>
+                            <button class="btn btn-sm btn-outline" id="btnRunDVDemo">▶ Run Distance Vector (Rounds)</button>
+                        </div>
+                    </div>
+                    <div class="graph-canvas-wrapper">
+                        <canvas id="routingGraphCanvas" width="600" height="380"></canvas>
+                    </div>
+                    <div class="algo-explanation" id="routingExplanation">
+                        <h3>Dijkstra Link-State Execution</h3>
+                        <p>Computed global shortest path tree from source <strong>Node A</strong> to destination <strong>Node D</strong>.</p>
+                        <div class="path-badge">Selected Path: A ➔ B ➔ C ➔ D &bull; Total Metric Cost: 4.0</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📊 Routing Table Matrix & Convergence</h2>
+                        <span class="badge badge-info" id="routingRoundBadge">Round 3 (Converged)</span>
+                    </div>
+                    <div class="routing-table-container">
+                        <table class="data-table" id="tableRoutingMatrix">
+                            <thead>
+                                <tr>
+                                    <th>Source Node</th>
+                                    <th>Destination</th>
+                                    <th>Next Hop</th>
+                                    <th>Metric Cost</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="routingTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="code-box">
+                        <div class="code-title">Distance Vector Bellman-Ford Equation with Poison Reverse:</div>
+                        <code>D_x(y) = min_v { c(x,v) + D_v(y) } | If NextHop(y) == v then advertise D_x(y) = &infin; (9999)</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: CRC ERROR DETECTION LAB -->
+        <section class="tab-content" id="crc-tab">
+            <div class="lab-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🛡️ CRC-16 & CRC-32 Bitwise Modulo-2 Division Lab</h2>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-primary active" id="btnCrc16">CRC-16 CCITT</button>
+                            <button class="btn btn-sm btn-outline" id="btnCrc32">CRC-32 IEEE</button>
+                        </div>
+                    </div>
+                    <div class="crc-input-box">
+                        <label for="txtCrcPayload">V2V Safety Message Payload:</label>
+                        <input type="text" id="txtCrcPayload" class="form-input" value="V2V|TYPE:EMERGENCY_BRAKE|SRC:V1|DST:V8|SEQ:101|DECEL:7.8">
+                        <div class="generator-poly-info">
+                            <span>Generator Polynomial $G(x)$: <strong id="lblPolyString">x^16 + x^12 + x^5 + 1</strong></span>
+                            <span class="mono-badge" id="lblPolyBits">10001000000100001</span>
+                        </div>
+                    </div>
+
+                    <div class="bitstream-section">
+                        <h3>Transmitted Frame (Data Bits + 16-bit FCS Checksum):</h3>
+                        <p class="section-hint">💡 <em>Click any bit below to manually inject noise (flip $0 \leftrightarrow 1$) and observe instant error detection:</em></p>
+                        <div class="bit-container" id="bitContainer">
+                            <!-- Populated with clickable bit buttons -->
+                        </div>
+                    </div>
+
+                    <div class="crc-actions">
+                        <button class="btn btn-warning" id="btnInjectRandomNoise">⚡ Inject Random Noise (1-3 Bit Flips)</button>
+                        <button class="btn btn-outline" id="btnResetCrcBits">🔄 Restore Clean Frame</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🔍 Receiver Modulo-2 Verification & Syndrome</h2>
+                        <span class="badge badge-success" id="badgeCrcStatus">CLEAN FRAME (Syndrome = 0)</span>
+                    </div>
+                    <div class="syndrome-display" id="syndromeDisplay">
+                        <div class="syndrome-result-box valid" id="syndromeBox">
+                            <div class="syndrome-icon" id="syndromeIcon">✅</div>
+                            <div class="syndrome-details">
+                                <h3 id="syndromeTitle">Frame Integrity Verified</h3>
+                                <p id="syndromeSubtitle">Modulo-2 division remainder is all zeros. Packet accepted.</p>
+                            </div>
+                        </div>
+                        <div class="syndrome-metrics">
+                            <div class="metric-box">
+                                <span class="metric-lbl">Calculated FCS</span>
+                                <span class="metric-val mono" id="valFcsBits">1101001100111000</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-lbl">Receiver Remainder</span>
+                                <span class="metric-val mono" id="valRemainderBits">0000000000000000</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-lbl">Error Detection Rate</span>
+                                <span class="metric-val text-success">100.0%</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-lbl">Corrupted Packets Filtered</span>
+                                <span class="metric-val" id="valCorruptCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="crc-benchmark-box">
+                        <h3>2,000-Trial Statistical Benchmark Results</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Channel Noise</th><th>Trials</th><th>Corrupted</th><th>Detected</th><th>Missed</th><th>Accuracy</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>0% Loss</td><td>500</td><td>0</td><td>0</td><td>0</td><td>100.0%</td></tr>
+                                <tr><td>5% Loss</td><td>500</td><td>28</td><td>28</td><td>0</td><td>100.0%</td></tr>
+                                <tr><td>10% Loss</td><td>500</td><td>57</td><td>57</td><td>0</td><td>100.0%</td></tr>
+                                <tr><td>20% Loss</td><td>500</td><td>95</td><td>95</td><td>0</td><td>100.0%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: SLIDING WINDOW & GO-BACK-N ARQ LAB -->
+        <section class="tab-content" id="window-tab">
+            <div class="lab-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🪟 Sliding Window Pipeline & Go-Back-N State Machine</h2>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-primary" id="btnSendWindowPackets">📤 Send Next Window</button>
+                            <button class="btn btn-sm btn-danger" id="btnDropInFlightPkt">💥 Drop Frame (Trigger NAK)</button>
+                            <button class="btn btn-sm btn-outline" id="btnResetWindow">🔄 Reset Pipeline</button>
+                        </div>
+                    </div>
+
+                    <div class="window-controls">
+                        <div class="control-item">
+                            <label>Sender Window Size ($W$):</label>
+                            <div class="btn-group" id="groupWindowSizes">
+                                <button class="btn btn-sm btn-outline" data-w="1">W = 1 (Stop-and-Wait)</button>
+                                <button class="btn btn-sm btn-primary active" data-w="4">W = 4</button>
+                                <button class="btn btn-sm btn-outline" data-w="8">W = 8</button>
+                                <button class="btn btn-sm btn-outline" data-w="16">W = 16</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pipeline-visualizer">
+                        <h3>Sender Buffer & Sliding Window [Base = <span id="lblBaseSeq">0</span>, Next = <span id="lblNextSeq">4</span>]</h3>
+                        <div class="buffer-track" id="senderBufferTrack">
+                            <!-- Packets in buffer rendered by JS -->
+                        </div>
+
+                        <h3>In-Flight Transmission Channel & Propagating Frames</h3>
+                        <div class="channel-track" id="channelTrack">
+                            <!-- Animated in-flight packets -->
+                        </div>
+
+                        <h3>Receiver Buffer & Cumulative ACKs</h3>
+                        <div class="buffer-track receiver-track" id="receiverBufferTrack">
+                            <!-- Received packets -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📊 Flow Control & ARQ Performance Scaling</h2>
+                        <span class="badge badge-primary">NS-2 Benchmark</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="windowChartCanvas" width="500" height="260"></canvas>
+                    </div>
+                    <div class="window-metrics-summary">
+                        <div class="metric-box">
+                            <span class="metric-lbl">Throughput ($W=1$)</span>
+                            <span class="metric-val">38.4 Kbps</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-lbl">Throughput ($W=16$)</span>
+                            <span class="metric-val text-success">412.8 Kbps</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-lbl">Link Utilization</span>
+                            <span class="metric-val text-info">94.2%</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-lbl">ARQ Recovery Time</span>
+                            <span class="metric-val">48.2 ms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: AIMD CONGESTION CONTROL LAB -->
+        <section class="tab-content" id="congestion-tab">
+            <div class="lab-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📈 Active AIMD Rate Adaptation & Queue Dynamics</h2>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-danger" id="btnTriggerCongestionDrop">💥 Trigger Queue Drop</button>
+                            <button class="btn btn-sm btn-success" id="btnSuccessfulBurst">⚡ Deliver Burst</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper large-chart">
+                        <canvas id="aimdChartCanvas" width="600" height="320"></canvas>
+                    </div>
+                    <div class="aimd-status-bar">
+                        <span>Current Rate: <strong id="aimdRateVal">2.40 Mbps</strong></span>
+                        <span>Queue Occupancy: <strong id="aimdQueueVal">18 / 50 pkts</strong></span>
+                        <span>State: <strong id="aimdStateVal" class="text-success">Additive Increase (+0.1 Mbps)</strong></span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🚗 Multi-Vehicle Density Scalability (10 &ndash; 200 Nodes)</h2>
+                        <span class="badge badge-info">NS-2 Scalability Study</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="scalingChartCanvas" width="500" height="260"></canvas>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Vehicles</th><th>Packets Sent</th><th>PDR (%)</th><th>Throughput</th><th>Avg Delay</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>10 Nodes</td><td>1,558</td><td>100.0%</td><td>1.58 Mbps</td><td>35.1 ms</td></tr>
+                                <tr><td>25 Nodes</td><td>1,558</td><td>100.0%</td><td>1.58 Mbps</td><td>35.1 ms</td></tr>
+                                <tr><td>50 Nodes</td><td>1,558</td><td>100.0%</td><td>1.58 Mbps</td><td>35.1 ms</td></tr>
+                                <tr><td>100 Nodes</td><td>1,558</td><td>100.0%</td><td>1.58 Mbps</td><td>35.1 ms</td></tr>
+                                <tr><td>200 Nodes</td><td>1,558</td><td>100.0%</td><td>1.58 Mbps</td><td>35.1 ms</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: NS-2 ANALYTICS & TRACES -->
+        <section class="tab-content" id="analytics-tab">
+            <div class="analytics-layout">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📊 Master NS-2 Experiment Performance Summary (12 Experiments)</h2>
+                        <span class="badge badge-primary">Raw NS-2 Trace Derived</span>
+                    </div>
+                    <div class="table-container full-table">
+                        <table class="data-table" id="masterSummaryTable">
+                            <thead>
+                                <tr>
+                                    <th>Exp ID</th>
+                                    <th>Scenario Description</th>
+                                    <th>Vehicles</th>
+                                    <th>Routing</th>
+                                    <th>Loss Rate</th>
+                                    <th>Window</th>
+                                    <th>PDR (%)</th>
+                                    <th>Loss (%)</th>
+                                    <th>Throughput (Kbps)</th>
+                                    <th>Avg Delay (ms)</th>
+                                    <th>Jitter (ms)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="masterSummaryTableBody">
+                                <!-- Populated from NS-2 CSV data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📜 Raw NS-2 Trace File Inspector (`.tr`)</h2>
+                        <div class="trace-filters">
+                            <select id="selectTraceFilter" class="form-select sm">
+                                <option value="all">All Events (+, -, r, d)</option>
+                                <option value="+">Enqueue (+)</option>
+                                <option value="-">Dequeue (-)</option>
+                                <option value="r">Receive (r)</option>
+                                <option value="d">Drop (d)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="raw-trace-viewer" id="rawTraceViewer">
+                        <!-- Populated with sample trace lines -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 7: VIVA DEFENSE PRESENTATION MODE -->
+        <section class="tab-content" id="viva-tab">
+            <div class="viva-container">
+                <div class="card viva-hero-card">
+                    <div class="viva-hero-content">
+                        <h2>🎓 Academic Viva Defense & Examination Guide</h2>
+                        <p>Complete oral defense presentation script, key protocol distinctions, and examiner questions.</p>
+                        <div class="viva-quick-actions">
+                            <button class="btn btn-primary" id="btnVivaDemo1">▶ Step 1: Emergency Brake Broadcast</button>
+                            <button class="btn btn-outline" id="btnVivaDemo2">▶ Step 2: Corrupt Frame & CRC Detect</button>
+                            <button class="btn btn-outline" id="btnVivaDemo3">▶ Step 3: Go-Back-N Retransmission</button>
+                            <button class="btn btn-outline" id="btnVivaDemo4">▶ Step 4: Multi-Vehicle Scaling Demo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="viva-qa-grid">
+                    <div class="card qa-card">
+                        <div class="qa-q">Q1: Why is Dijkstra preferred over Distance Vector for emergency V2V messages?</div>
+                        <div class="qa-a">
+                            <strong>Answer:</strong> V2V safety messages have an ultra-low latency threshold ($<100\text{ ms}$). Dijkstra's Link-State algorithm computes the global shortest path instantly in 1 computation step with zero inter-node table exchanges. Distance Vector requires multiple distributed update rounds, risking stale routing and temporary packet drops during highway topology changes.
+                        </div>
+                    </div>
+
+                    <div class="card qa-card">
+                        <div class="qa-q">Q2: How does CRC-16 mathematically guarantee 100% burst error detection?</div>
+                        <div class="qa-a">
+                            <strong>Answer:</strong> CRC uses polynomial Modulo-2 division over $GF(2)$. With generator polynomial $G(x) = x^{16} + x^{12} + x^5 + 1$, any burst error of length $\le 16$ bits cannot produce an error polynomial $E(x)$ divisible by $G(x)$. Therefore, the remainder (syndrome) is non-zero, ensuring $100\%$ detection.
+                        </div>
+                    </div>
+
+                    <div class="card qa-card">
+                        <div class="qa-q">Q3: What is the relationship between Window Size, Delay, and Throughput?</div>
+                        <div class="qa-a">
+                            <strong>Answer:</strong> Throughput scales with window size $W$ according to link utilization $U = \frac{W \cdot T_{\text{tx}}}{T_{\text{tx}} + 2 \cdot T_{\text{prop}}}$. Scaling $W$ from 1 to 16 increased throughput from $38.4\text{ Kbps}$ to $412.8\text{ Kbps}$. However, once $W$ exceeds the Bandwidth-Delay Product (BDP), additional packets buffer in queues, increasing average delay.
+                        </div>
+                    </div>
+
+                    <div class="card qa-card">
+                        <div class="qa-q">Q4: How does AIMD Congestion Control prevent broadcast storms in 200 vehicles?</div>
+                        <div class="qa-a">
+                            <strong>Answer:</strong> When 200 vehicles transmit simultaneously, packet collision and queue overflow occur. Our active AIMD engine monitors queue drop events: upon detecting packet loss, the sending rate is halved ($R = R / 2$), immediately clearing buffer backlog, and then recovered gradually via additive increase ($R = R + 0.1\text{ Mbps}$).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="footer-content">
+            <span>Autonomous Vehicle V2V Communication Simulator &bull; Pure NS-2 Engine &bull; Academic Project</span>
+            <span class="footer-author">Lead Engineer: Likith Kumar &bull; Computer Networks Capstone</span>
+        </div>
+    </footer>
+
+    <!-- Visualizer Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
