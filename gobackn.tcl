@@ -162,7 +162,11 @@ GoBackNARQEngine instproc run_simulation {{max_ticks 500}} {
 
 proc run_gobackn_benchmark {} {
     set loss_rates {0.00 0.05 0.10 0.20 0.30}
-    set fp [open "gobackn_results.csv" w]
+    set csv_file "results/csv/gobackn_results.csv"
+    if {![file exists "results/csv"]} {
+        set csv_file "gobackn_results.csv"
+    }
+    set fp [open $csv_file w]
     puts $fp "loss_rate,packets_sent,packets_received,packets_lost,retransmissions,delivery_ratio,retransmission_ratio,throughput,delay"
 
     puts "========================================================================"
@@ -185,5 +189,5 @@ proc run_gobackn_benchmark {} {
 
     close $fp
     puts "------------------------------------------------------------------------"
-    puts " \[OK\] Exported Go-Back-N metrics to gobackn_results.csv"
+    puts " \[OK\] Exported Go-Back-N metrics to $csv_file"
 }

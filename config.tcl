@@ -17,8 +17,8 @@ set opt(qtype)             DropTail    ;# Queue management discipline
 set opt(loss_rate)         0.05        ;# 5% wireless channel packet loss probability (configurable)
 
 # Output Files
-set opt(trace_file)        "basic_v2v.tr"
-set opt(nam_file)          "basic_v2v.nam"
+set opt(trace_file)        "results/traces/basic_v2v.tr"
+set opt(nam_file)          "results/traces/basic_v2v.nam"
 
 # ======================================================================
 # V2V Safety & Telemetry Message Types Specifications

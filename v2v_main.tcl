@@ -19,9 +19,9 @@ set opt(simtime)     5.0
 set opt(bw)          10Mb
 set opt(delay)       5ms
 set opt(qsize)       50
-set opt(trace_file)  "v2v_final.tr"
-set opt(nam_file)    "v2v_final.nam"
-set opt(csv_file)    "v2v_final_metrics.csv"
+set opt(trace_file)  "results/traces/v2v_final.tr"
+set opt(nam_file)    "results/traces/v2v_final.nam"
+set opt(csv_file)    "results/csv/v2v_final_metrics.csv"
 
 # Parse CLI arguments
 for {set i 0} {$i < $argc} {incr i} {
@@ -64,9 +64,11 @@ $ns color 2 Orange    ;# High-Priority Sudden Braking Alert
 $ns color 3 Blue      ;# Normal-Priority Traffic Info Telemetry
 
 # Output trace files
+catch {file mkdir [file dirname $opt(trace_file)]}
 set tf [open $opt(trace_file) w]
 $ns trace-all $tf
 
+catch {file mkdir [file dirname $opt(nam_file)]}
 set nf [open $opt(nam_file) w]
 $ns namtrace-all $nf
 

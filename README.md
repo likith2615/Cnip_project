@@ -50,6 +50,13 @@ v2v_project/
 ├── run_experiments.sh               # Automated suite running all 12 experimental scenarios
 ├── run_final.sh                     # CLI runner for custom simulation parameters
 ├── generate_graphs.sh               # Automated Gnuplot script creating all 12 PNG charts
+├── run_visualizer.sh                # Linux/WSL launcher for web visualizer
+├── open_visualizer.bat              # Windows 1-click launcher for web visualizer
+│
+├── visualizer/                      # Interactive Web Visualizer (HTML5 / Canvas / CSS)
+│   ├── index.html                   # Interactive simulation dashboard
+│   ├── style.css                    # Modern glassmorphism styling
+│   └── app.js                       # Protocol simulators, live highway & viva defense
 │
 ├── analysis/                        # Pure AWK & Gnuplot Analytics Pipeline
 │   ├── packet_delivery_ratio.awk    # AWK parser: End-to-End PDR (%) & Packet Loss (%)
@@ -61,7 +68,7 @@ v2v_project/
 ├── results/                         # Generated Simulation Data & Artifacts
 │   ├── traces/                      # Generated NS-2 .tr and .nam files
 │   ├── csv/                         # Structured metric CSV datasets
-│   ├── graphs/                      # 12 Publication-quality PNG plots
+│   ├── graphs/                      # 17 Publication-quality PNG plots
 │   └── logs/                        # Simulation and unit test execution logs
 │
 └── Documentation Suite/
@@ -69,11 +76,9 @@ v2v_project/
     ├── ALGORITHMS.md                # Comprehensive technical algorithm specifications
     ├── EXPERIMENTS.md               # Full documentation of all 12 experiments
     ├── RESULTS.md                   # Real numerical metrics from actual simulation runs
-    ├── DEMO.md                      # 10-Minute structured viva presentation guide
+    ├── DEMO.md                      # Complete viva presentation and demo walkthrough guide
     ├── VIVA.md                      # 50+ Core Computer Networks viva questions & answers
-    ├── PROJECT_REPORT.md            # Complete 16-chapter academic project report
-    ├── FINAL_AUDIT.md               # Complete verification matrix for all requirements
-    └── CHANGELOG.md                 # Version and milestone change history
+    └── PROJECT_REPORT.md            # Complete 16-chapter academic project report
 ```
 
 ---
@@ -112,6 +117,24 @@ ns sliding_window_test.tcl    # Test Sliding Window flow control
 ns gobackn_test.tcl           # Test Go-Back-N forced-loss retransmission
 ```
 
+### 5. Launch Interactive Web Visualizer
+- **On Windows (Direct double-click or CLI)**:
+  ```cmd
+  open_visualizer.bat
+  ```
+- **On Linux / WSL Terminal**:
+  ```bash
+  chmod +x run_visualizer.sh
+  ./run_visualizer.sh
+  ```
+- **Direct Browser Access**: Open `visualizer/index.html` in Chrome, Edge, or Firefox.
+
+### 6. Generate All Publication Graphs (Gnuplot)
+```bash
+chmod +x generate_graphs.sh
+./generate_graphs.sh
+```
+
 ---
 
 ## 📊 Summary of Actual Experimental Results
@@ -148,9 +171,10 @@ All numerical metrics are extracted directly from authentic NS-2 simulation trac
 ---
 
 ## 🎓 Viva & Demo Resources
-- **Presentation Script**: Follow the 10-minute demo walkthrough in [`DEMO.md`](./DEMO.md).
+- **Presentation Script**: Follow the structured walkthrough in [`DEMO.md`](./DEMO.md).
 - **Viva Voce Preparation**: Review the 50+ core questions and answers in [`VIVA.md`](./VIVA.md).
 - **Academic Project Report**: Complete 16-section report in [`PROJECT_REPORT.md`](./PROJECT_REPORT.md).
 - **System Architecture**: Detailed protocol stack and state machines in [`ARCHITECTURE.md`](./ARCHITECTURE.md).
 - **Algorithm Specifications**: In-depth equations and logic in [`ALGORITHMS.md`](./ALGORITHMS.md).
-- **Verification Audit**: Requirement-by-requirement audit matrix in [`FINAL_AUDIT.md`](./FINAL_AUDIT.md).
+- **Experiments Guide**: Complete breakdown of all 12 test scenarios in [`EXPERIMENTS.md`](./EXPERIMENTS.md).
+- **Benchmark Results**: Real experimental datasets in [`RESULTS.md`](./RESULTS.md).

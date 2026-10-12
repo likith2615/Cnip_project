@@ -24,6 +24,8 @@ for {set i 0} {$i < $argc} {incr i} {
         set opt(qlimit) [lindex $argv [incr i]]
     } elseif {$arg == "-trace_file" && [expr $i + 1] < $argc} {
         set opt(trace_file) [lindex $argv [incr i]]
+    } elseif {$arg == "-nam_file" && [expr $i + 1] < $argc} {
+        set opt(nam_file) [lindex $argv [incr i]]
     }
 }
 
@@ -50,9 +52,11 @@ $ns color $msg(SUDDEN_BRAKING,fid)    $msg(SUDDEN_BRAKING,color)
 $ns color $msg(TRAFFIC_INFO,fid)       $msg(TRAFFIC_INFO,color)
 
 # Open Output Trace and NAM Files
+catch {file mkdir [file dirname $opt(trace_file)]}
 set tf [open $opt(trace_file) w]
 $ns trace-all $tf
 
+catch {file mkdir [file dirname $opt(nam_file)]}
 set nf [open $opt(nam_file) w]
 $ns namtrace-all $nf
 

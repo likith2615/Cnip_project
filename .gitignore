@@ -1,0 +1,25 @@
+# ======================================================================
+# Autonomous Vehicle V2V Communication Simulator
+# Git Ignore Configuration
+# ======================================================================
+
+# Root temporary simulation outputs (canonical artifacts stay in results/)
+/basic_v2v.nam
+/basic_v2v.tr
+/v2v_final.nam
+/v2v_final.tr
+/v2v_final_metrics.csv
+/window_results.csv
+/gobackn_results.csv
+/congestion_*v.tr
+/congestion_*v.nam
+results/traces/v2v_final.*
+
+# OS & Editor artifacts
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*~
+.vscode/
+.idea/

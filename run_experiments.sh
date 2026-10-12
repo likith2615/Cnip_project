@@ -85,14 +85,14 @@ echo "EXP8,100_Vehicles_20pct_Loss,100,DIJKSTRA,0.20,4,$METRICS" >> $EXP_CSV
 # ----------------------------------------------------------------------
 echo " [Exp 09/12] Sliding Window Flow Control Study (W=1, 4, 8, 16)..."
 ns sliding_window_test.tcl > results/logs/exp9.log
-cp window_results.csv results/csv/
+[ -f "window_results.csv" ] && mv -f window_results.csv results/csv/
 
 # ----------------------------------------------------------------------
 # EXPERIMENT 10: Go-Back-N with Controlled Packet Loss
 # ----------------------------------------------------------------------
 echo " [Exp 10/12] Go-Back-N ARQ with Controlled Packet Loss..."
 ns gobackn_test.tcl > results/logs/exp10.log
-cp gobackn_results.csv results/csv/
+[ -f "gobackn_results.csv" ] && mv -f gobackn_results.csv results/csv/
 
 # ----------------------------------------------------------------------
 # EXPERIMENT 11: Multi-Vehicle Congestion Scaling (10, 25, 50, 100, 200 nodes)

@@ -82,7 +82,11 @@ proc run_window_benchmark {} {
     set total_packets 40
     set rtt_ms 10.0
 
-    set fp [open "window_results.csv" w]
+    set csv_file "results/csv/window_results.csv"
+    if {![file exists "results/csv"]} {
+        set csv_file "window_results.csv"
+    }
+    set fp [open $csv_file w]
     puts $fp "window_size,packets_sent,packets_acked,packets_in_flight,throughput,average_delay"
 
     puts "========================================================================"
@@ -131,5 +135,5 @@ proc run_window_benchmark {} {
 
     close $fp
     puts "------------------------------------------------------------------------"
-    puts " \[OK\] Exported window metrics to window_results.csv"
+    puts " \[OK\] Exported window metrics to $csv_file"
 }

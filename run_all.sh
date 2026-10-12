@@ -21,7 +21,7 @@ echo "  -> AWK Trace Parser: $(which awk)"
 echo "  -> Gnuplot Engine:   $(which gnuplot)"
 echo ""
 
-mkdir -p results/traces results/csv results/graphs results/logs results/summaries
+mkdir -p results/traces results/csv results/graphs results/logs
 
 # ----------------------------------------------------------------------
 # 1. RUN UNIT TESTS

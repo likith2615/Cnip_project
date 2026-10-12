@@ -10,13 +10,20 @@ set -e
 # Pass all CLI arguments directly to v2v_main.tcl
 ns v2v_main.tcl "$@"
 
-# Automatically parse generated trace if v2v_final.tr exists
-if [ -f "v2v_final.tr" ]; then
+# Automatically parse generated trace
+TRACE_PATH=""
+if [ -f "results/traces/v2v_final.tr" ]; then
+    TRACE_PATH="results/traces/v2v_final.tr"
+elif [ -f "v2v_final.tr" ]; then
+    TRACE_PATH="v2v_final.tr"
+fi
+
+if [ -n "$TRACE_PATH" ]; then
     echo ""
     echo "========================================================================"
-    echo "                      AUTOMATED TRACE ANALYSIS                          "
+    echo "                      AUTOMATED TRACE ANALYSIS ($TRACE_PATH)            "
     echo "========================================================================"
-    awk -f analysis/packet_delivery_ratio.awk v2v_final.tr
-    awk -f analysis/throughput.awk v2v_final.tr
-    awk -f analysis/end_to_end_delay.awk v2v_final.tr
+    awk -f analysis/packet_delivery_ratio.awk "$TRACE_PATH"
+    awk -f analysis/throughput.awk "$TRACE_PATH"
+    awk -f analysis/end_to_end_delay.awk "$TRACE_PATH"
 fi

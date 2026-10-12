@@ -5,14 +5,14 @@
    -> Calculated CRC-16 FCS (16 bits): 1101001100111000
    -> Transmitted Frame Length:         464 bits
    -> Clean Frame Verification: Syndrome=0000000000000000 (Valid: 1)
-   -> Corrupted Frame Verification: Syndrome=1101001010111111 (Valid: 0)
+   -> Corrupted Frame Verification: Syndrome=0101101000101001 (Valid: 0)
 ------------------------------------------------------------------------
  Running Multi-Payload CRC Detection Benchmark (500 trials per rate)...
 ------------------------------------------------------------------------
  Error Rate 0.00: Checked=500 | Valid=500 | Corrupted=0 | Detected=0 | Missed=0
- Error Rate 0.05: Checked=500 | Valid=471 | Corrupted=29 | Detected=29 | Missed=0
- Error Rate 0.10: Checked=500 | Valid=443 | Corrupted=57 | Detected=57 | Missed=0
- Error Rate 0.20: Checked=500 | Valid=401 | Corrupted=99 | Detected=99 | Missed=0
+ Error Rate 0.05: Checked=500 | Valid=473 | Corrupted=27 | Detected=27 | Missed=0
+ Error Rate 0.10: Checked=500 | Valid=453 | Corrupted=47 | Detected=47 | Missed=0
+ Error Rate 0.20: Checked=500 | Valid=397 | Corrupted=103 | Detected=103 | Missed=0
 ------------------------------------------------------------------------
  TOTAL_PACKETS_CHECKED = 2000
  VALID_PACKETS         = Tested
